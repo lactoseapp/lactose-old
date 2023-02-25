@@ -8,9 +8,12 @@
 	import { history } from '@milkdown/plugin-history';
 	import { listener, listenerCtx } from '@milkdown/plugin-listener';
 	import { EditorMarkdown, EditorDocument } from '$lib/stores';
+	import { replaceAll } from '@milkdown/utils';
+
+	export const defaultValue = 'Hello World!';
 
 	function editor(dom: any) {
-		Editor.make()
+		const e = Editor.make()
 			.config((ctx) => {
 				const listener = ctx.get(listenerCtx);
 				listener.markdownUpdated((ctx, md, prev) => {
@@ -22,7 +25,7 @@
 					localStorage.setItem('document', JSON.stringify(doc));
 				});
 				ctx.set(rootCtx, dom);
-				ctx.set(defaultValueCtx, localStorage.getItem('markdown') as string);
+				ctx.set(defaultValueCtx, 'Hello World!');
 			})
 			.use(commonmark)
 			.use(gfm)
@@ -32,6 +35,12 @@
 			.use(history)
 			.use(listener)
 			.create();
+
+		e.then((editor) => {
+			if (localStorage.getItem('markdown')) {
+				editor.action(replaceAll(localStorage.getItem('markdown') as string));
+			}
+		});
 	}
 </script>
 
