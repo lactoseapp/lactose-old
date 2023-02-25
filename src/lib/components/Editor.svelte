@@ -24,6 +24,6 @@
 	}
 </script>
 
-<div use:editor class="prose mx-auto mt-12 max-w-6xl p-5" />
+<div use:editor class="prose mx-auto my-12 max-w-6xl p-5" spellcheck="false" />
 
 <style></style>
