@@ -2,4 +2,6 @@
 	import '../app.scss';
 </script>
 
-<slot />
+<div class="wrapper flex min-h-screen flex-col">
+	<slot />
+</div>
