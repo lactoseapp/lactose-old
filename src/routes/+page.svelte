@@ -4,9 +4,8 @@
 	import Footer from '$lib/components/Footer.svelte';
 </script>
 
-<main>
+<main class="min-h-screen dark:bg-stone-900">
 	<Header />
-	<Editor defaultValue="Hello World!" />
+	<Editor />
 	<Footer />
 </main>
-

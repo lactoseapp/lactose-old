@@ -10,7 +10,7 @@
 	--color-inactive: #ccc;
 	--color-primary: #84e200;
 	.editor {
-		outline: 1px dashed var(--color-inactive);
+		@apply outline-dashed outline-1 outline-stone-300;
 		padding: 1em;
 		&:focus {
 			outline: none;
@@ -37,6 +37,42 @@
 		}
 		.ProseMirror-separator {
 			display: none;
+		}
+	}
+}
+.dark {
+	.milkdown {
+		--color-code-bg: #292524;
+		--color-primary: #84e200;
+		.editor {
+			@apply outline-dashed outline-1 outline-stone-600;
+			padding: 1em;
+			&:focus {
+				outline: none;
+			}
+			span[data-type='emoji'] {
+				.emoji {
+					width: 1.25em;
+					height: 1.25em;
+					display: inline-block;
+					margin: 0;
+				}
+			}
+			p,
+			li {
+				margin: 0;
+			}
+			li::marker {
+				color: var(--color-primary);
+			}
+			pre,
+			code {
+				background: var(--color-code-bg);
+				color: unset;
+			}
+			.ProseMirror-separator {
+				display: none;
+			}
 		}
 	}
 }
