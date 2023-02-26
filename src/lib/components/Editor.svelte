@@ -7,7 +7,8 @@
 	import { prism } from '@milkdown/plugin-prism';
 	import { history } from '@milkdown/plugin-history';
 	import { listener, listenerCtx } from '@milkdown/plugin-listener';
-	import { EditorMarkdown, EditorDocument } from '$lib/stores';
+	import { Editor_Markdown, Editor_Document, Editor_Instance } from '$lib/stores';
+	import { updateContent, getSpecificNote } from '$lib/db';
 	import { replaceAll } from '@milkdown/utils';
 
 	export const defaultValue = 'Hello World!';
@@ -16,13 +17,12 @@
 		const e = Editor.make()
 			.config((ctx) => {
 				const listener = ctx.get(listenerCtx);
-				listener.markdownUpdated((ctx, md, prev) => {
-					EditorMarkdown.set(md);
-					localStorage.setItem('markdown', md);
+				listener.markdownUpdated(async (ctx, md, prev) => {
+					Editor_Markdown.set(md);
+					await updateContent(parseInt(localStorage.getItem('currentNote') as string), md);
 				});
 				listener.updated((ctx, doc, prev) => {
-					EditorDocument.set(doc);
-					localStorage.setItem('document', JSON.stringify(doc));
+					Editor_Document.set(doc);
 				});
 				ctx.set(rootCtx, dom);
 				ctx.set(defaultValueCtx, 'Hello World!');
@@ -37,9 +37,13 @@
 			.create();
 
 		e.then((editor) => {
-			if (localStorage.getItem('markdown')) {
-				editor.action(replaceAll(localStorage.getItem('markdown') as string));
-			}
+			const currentNote = parseInt(localStorage.getItem('currentNote') as string);
+			getSpecificNote(currentNote).then((note) => {
+				Editor_Instance.set(editor);
+				if (note) {
+					editor.action(replaceAll(note.content));
+				}
+			});
 		});
 	}
 </script>

@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { Menu, Sun, MoreVertical, Moon } from 'lucide-svelte';
-	import { theme } from '$lib/stores';
+	import { App_Theme } from '$lib/stores';
 	import { onMount } from 'svelte';
 
-	onMount(() => {
-		const t = localStorage.getItem('theme') || 'light';
-		setTheme(t);
-	});
-
-	const setTheme = (t: string) => {
+	const setTheme = (theme: string) => {
 		document.documentElement.classList.remove('light', 'dark');
-		document.documentElement.classList.add(t);
-		localStorage.setItem('theme', t);
-		theme.set(t);
+		document.documentElement.classList.add(theme);
+		localStorage.setItem('theme', theme);
+		App_Theme.set(theme);
 	};
+
+	onMount(async () => {
+		const local_theme = localStorage.getItem('theme') || 'light';
+		setTheme(local_theme);
+	});
 </script>
 
 <nav
@@ -25,11 +25,10 @@
 			type="text"
 			name="note-title"
 			id="note-title"
-			value="Hello World!"
 			class="w-full bg-transparent outline-stone-300 focus:outline-dashed dark:outline-stone-700"
 		/>
 	</div>
-	{#if $theme === 'light'}
+	{#if $App_Theme === 'light'}
 		<button on:click={() => setTheme('dark')}>
 			<Sun class="flex-shrink-0" />
 		</button>

@@ -5,9 +5,15 @@
 <nav
 	class="fixed bottom-0 flex w-screen items-center gap-5 bg-white p-5 text-stone-800 dark:bg-stone-900 dark:text-stone-300"
 >
-	<ChevronLeft />
+	<button>
+		<ChevronLeft />
+	</button>
 	<span class="spacer" />
-	<ChevronRight />
-	<PlusSquare class="flex-grow" />
+	<button>
+		<ChevronRight />
+	</button>
+	<button class="flex flex-grow justify-center">
+		<PlusSquare />
+	</button>
 	<GitCompare />
 </nav>

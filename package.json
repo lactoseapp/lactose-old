@@ -37,13 +37,16 @@
 	"dependencies": {
 		"@milkdown/core": "^7.0.0",
 		"@milkdown/plugin-clipboard": "^7.0.0",
+		"@milkdown/plugin-diagram": "^7.0.0",
 		"@milkdown/plugin-emoji": "^7.0.0",
 		"@milkdown/plugin-history": "^7.0.0",
 		"@milkdown/plugin-listener": "^7.0.0",
+		"@milkdown/plugin-math": "^7.0.0",
 		"@milkdown/plugin-prism": "^7.0.0",
 		"@milkdown/preset-gfm": "^7.0.0",
 		"@milkdown/prose": "^7.0.0",
 		"@milkdown/theme-nord": "^7.0.0",
+		"dexie": "^3.2.3",
 		"lucide-svelte": "^0.115.0"
 	}
 }
