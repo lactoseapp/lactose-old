@@ -1,18 +1,15 @@
 <script lang="ts">
-	import { Menu, Sun, MoreVertical, Moon } from 'lucide-svelte';
-	import { App_Theme } from '$lib/stores';
+	import { Menu, Terminal } from 'lucide-svelte';
+	import { Header_Title, View_Document } from '$lib/stores';
+	import { getNoteById, updateTitle, type Note } from '$lib/db';
 	import { onMount } from 'svelte';
 
-	const setTheme = (theme: string) => {
-		document.documentElement.classList.remove('light', 'dark');
-		document.documentElement.classList.add(theme);
-		localStorage.setItem('theme', theme);
-		App_Theme.set(theme);
+	const setTitle = async (title: string) => {
+		await updateTitle($View_Document, title);
 	};
-
 	onMount(async () => {
-		const local_theme = localStorage.getItem('theme') || 'light';
-		setTheme(local_theme);
+		const currentNote = await getNoteById($View_Document);
+		Header_Title.set((currentNote as Note).title);
 	});
 </script>
 
@@ -26,16 +23,22 @@
 			name="note-title"
 			id="note-title"
 			class="w-full bg-transparent outline-stone-300 focus:outline-dashed dark:outline-stone-700"
+			bind:value={$Header_Title}
+			on:blur={() => setTitle($Header_Title)}
 		/>
 	</div>
-	{#if $App_Theme === 'light'}
-		<button on:click={() => setTheme('dark')}>
-			<Sun class="flex-shrink-0" />
-		</button>
-	{:else}
-		<button on:click={() => setTheme('light')}>
-			<Moon class="flex-shrink-0" />
-		</button>
-	{/if}
-	<MoreVertical class="flex-shrink-0" />
+	<div class="shortcut hidden text-xs lg:block">
+		<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
+			>Ctrl</span
+		>
+		/
+		<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
+			>Cmd</span
+		>
+		+
+		<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
+			>K</span
+		>
+	</div>
+	<Terminal class="flex-shrink-0 dark:text-stone-300" />
 </nav>

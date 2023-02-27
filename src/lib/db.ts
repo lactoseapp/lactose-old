@@ -30,7 +30,7 @@ export const newNote = async () => {
     }
 };
 
-export const getNodeById = async (id: number) => {
+export const getNoteById = async (id: number) => {
     if (browser) {
         const result = await db.notes.where('id').equals(id).first();
         return result;

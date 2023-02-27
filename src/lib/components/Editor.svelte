@@ -7,19 +7,18 @@
 	import { prism } from '@milkdown/plugin-prism';
 	import { history } from '@milkdown/plugin-history';
 	import { listener, listenerCtx } from '@milkdown/plugin-listener';
-	import { Editor_Markdown, Editor_Document, Editor_Instance } from '$lib/stores';
-	import { updateContent, getSpecificNote } from '$lib/db';
+	import { Editor_Markdown, Editor_Document, Editor_Instance, View_Document } from '$lib/stores';
+	import { updateContent, getNoteById } from '$lib/db';
 	import { replaceAll } from '@milkdown/utils';
-
 	export const defaultValue = 'Hello World!';
 
 	function editor(dom: any) {
-		const e = Editor.make()
+		const makeEditor = Editor.make()
 			.config((ctx) => {
 				const listener = ctx.get(listenerCtx);
 				listener.markdownUpdated(async (ctx, md, prev) => {
 					Editor_Markdown.set(md);
-					await updateContent(parseInt(localStorage.getItem('currentNote') as string), md);
+					await updateContent($View_Document, md);
 				});
 				listener.updated((ctx, doc, prev) => {
 					Editor_Document.set(doc);
@@ -36,9 +35,8 @@
 			.use(listener)
 			.create();
 
-		e.then((editor) => {
-			const currentNote = parseInt(localStorage.getItem('currentNote') as string);
-			getSpecificNote(currentNote).then((note) => {
+		makeEditor.then((editor) => {
+			getNoteById($View_Document).then((note: any) => {
 				Editor_Instance.set(editor);
 				if (note) {
 					editor.action(replaceAll(note.content));
