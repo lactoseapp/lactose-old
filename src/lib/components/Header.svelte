@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Menu, Terminal } from 'lucide-svelte';
-	import { Header_Title, View_Document } from '$lib/stores';
+	import { Header_Title, View_Document, CommandPalette_Open } from '$lib/stores';
 	import { getNoteById, updateTitle, type Note } from '$lib/db';
 	import { onMount } from 'svelte';
 
@@ -40,5 +40,11 @@
 			>K</span
 		>
 	</div>
-	<Terminal class="flex-shrink-0 dark:text-stone-300" />
+	<button
+		on:click={() => {
+			CommandPalette_Open.set(true);
+		}}
+	>
+		<Terminal class="flex-shrink-0 dark:text-stone-300" />
+	</button>
 </nav>

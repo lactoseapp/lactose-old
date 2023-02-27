@@ -6,3 +6,4 @@ export const Editor_Instance = writable({});
 export const Header_Title = writable("Lactose");
 export const App_Theme = writable("light");
 export const View_Document = writable(1);
+export const CommandPalette_Open = writable(false);

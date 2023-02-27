@@ -3,7 +3,7 @@
 	import { getAllNotes, getNoteById, newNote, deleteNote } from '$lib/db';
 	import { Search } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { View_Document, Editor_Instance, Header_Title } from '$lib/stores';
+	import { View_Document, Editor_Instance, Header_Title, CommandPalette_Open } from '$lib/stores';
 	import { replaceAll } from '@milkdown/utils';
 
 	let notes: any = [];
@@ -13,6 +13,7 @@
 		getNoteById(id).then((note: any) => {
 			($Editor_Instance as any).action(replaceAll(note.content));
 			Header_Title.set(note.title);
+			CommandPalette_Open.set(false);
 		});
 	};
 	const createNote = async () => {
@@ -32,8 +33,22 @@
 	};
 	onMount(async () => {
 		notes = await fetchNotes();
+
+		window.addEventListener('keydown', (e) => {
+			if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+				e.preventDefault();
+				CommandPalette_Open.set(true);
+			}
+			if (e.key === 'Escape' || (e.key === 'Esc' && $CommandPalette_Open)) {
+				e.preventDefault();
+				CommandPalette_Open.set(false);
+			}
+		});
 	});
 	View_Document.subscribe(async (id) => {
+		notes = await fetchNotes();
+	});
+	CommandPalette_Open.subscribe(async () => {
 		notes = await fetchNotes();
 	});
 	let query: string = '';
@@ -42,7 +57,10 @@
 			title: 'Create new note',
 			modifier: 'Ctrl',
 			key: 'N',
-			command: () => createNote()
+			command: () => {
+				createNote();
+				CommandPalette_Open.set(false);
+			}
 		},
 		{
 			title: 'Delete current note',
@@ -51,50 +69,65 @@
 					deleteNote($View_Document);
 					View_Document.set(1);
 					loadNote(1);
+					CommandPalette_Open.set(false);
 				}
 			}
 		}
 	];
 </script>
 
-<dialog
-	class="border-1 fixed top-1/3 mx-auto flex max-h-60 w-5/6 flex-col rounded border border-stone-400 p-4 text-stone-600 shadow-md dark:bg-stone-900 dark:text-stone-300 lg:w-1/3"
->
-	<div class="searchbar border-box mb-2 flex items-center gap-4 border-stone-400">
-		<Search class="flex-shrink-0" />
-		<input
-			type="text"
-			name="search"
-			id="search"
-			class="flex w-full items-center bg-transparent focus:outline-none"
-			placeholder="search..."
-			bind:value={query}
+{#if $CommandPalette_Open}
+	<div class="overlay">
+		<div
+			class="fixed inset-0 z-10 bg-black opacity-50"
+			on:click={() => CommandPalette_Open.set(false)}
+			on:keydown={(e) => {
+				if (e.key === 'Escape') {
+					CommandPalette_Open.set(false);
+				}
+			}}
 		/>
 	</div>
-	<div class="spacer my-2">
-		<hr class="border-stone-400 dark:border-stone-700" />
-	</div>
-	<div class="command-list h-full max-h-40 overflow-auto">
-		<span class="my-2 block py-2 font-bold">Notes</span>
-		{#each notes.filter((note) => note.title.toLowerCase().includes(query.toLowerCase())) as note}
-			<Command
-				title={note.title}
-				modifier={note.modifier}
-				key={note.key}
-				command={note.command}
-				icon="Document"
+	<dialog
+		open
+		class="border-1 top-1/3 z-20 mx-auto flex max-h-60 w-5/6 flex-col rounded border border-stone-400 p-4 text-stone-600 shadow-md dark:bg-stone-900 dark:text-stone-300 lg:w-1/3"
+	>
+		<div class="searchbar border-box mb-2 flex items-center gap-4 border-stone-400">
+			<Search class="flex-shrink-0" />
+			<input
+				type="text"
+				name="search"
+				id="search"
+				class="flex w-full items-center bg-transparent focus:outline-none"
+				placeholder="search..."
+				bind:value={query}
 			/>
-		{/each}
-		<span class="my-2 block py-2 font-bold">Commands</span>
-		{#each commands.filter((command) => command.title
-				.toLowerCase()
-				.includes(query.toLowerCase())) as command}
-			<Command
-				title={command.title}
-				modifier={command.modifier}
-				key={command.key}
-				command={command.command}
-			/>
-		{/each}
-	</div>
-</dialog>
+		</div>
+		<div class="spacer my-2">
+			<hr class="border-stone-400 dark:border-stone-700" />
+		</div>
+		<div class="command-list h-full max-h-40 overflow-auto">
+			<span class="my-2 block py-2 font-bold">Notes</span>
+			{#each notes.filter((note) => note.title.toLowerCase().includes(query.toLowerCase())) as note}
+				<Command
+					title={note.title}
+					modifier={note.modifier}
+					key={note.key}
+					command={note.command}
+					icon="Document"
+				/>
+			{/each}
+			<span class="my-2 block py-2 font-bold">Commands</span>
+			{#each commands.filter((command) => command.title
+					.toLowerCase()
+					.includes(query.toLowerCase())) as command}
+				<Command
+					title={command.title}
+					modifier={command.modifier}
+					key={command.key}
+					command={command.command}
+				/>
+			{/each}
+		</div>
+	</dialog>
+{/if}
