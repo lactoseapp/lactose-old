@@ -3,9 +3,15 @@
 	import { getAllNotes, getNoteById, newNote, deleteNote } from '$lib/db';
 	import { Search } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { View_Document, Editor_Instance, Header_Title, CommandPalette_Open } from '$lib/stores';
+	import {
+		View_Document,
+		Editor_Instance,
+		Header_Title,
+		CommandPalette_Open,
+		App_Theme
+	} from '$lib/stores';
 	import { replaceAll } from '@milkdown/utils';
-
+	let CommandPalette: HTMLInputElement;
 	let notes: any = [];
 	const loadNote = (id: number) => {
 		View_Document.set(id);
@@ -20,7 +26,12 @@
 		const id = await newNote();
 		loadNote(id as any);
 	};
-
+	const setTheme = (theme: string) => {
+		document.documentElement.classList.remove('light', 'dark');
+		document.documentElement.classList.add(theme);
+		localStorage.setItem('theme', theme);
+		App_Theme.set(theme);
+	};
 	const fetchNotes = async () => {
 		let notes = (await getAllNotes()) as any;
 		notes = notes.map((note: any) => {
@@ -33,10 +44,12 @@
 	};
 	onMount(async () => {
 		notes = await fetchNotes();
-
+		CommandPalette.focus();
 		window.addEventListener('keydown', (e) => {
 			if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
 				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
 				CommandPalette_Open.set(true);
 			}
 			if (e.key === 'Escape' || (e.key === 'Esc' && $CommandPalette_Open)) {
@@ -72,6 +85,16 @@
 					CommandPalette_Open.set(false);
 				}
 			}
+		},
+		{
+			title: 'Toggle theme',
+			command: () => {
+				if ($App_Theme === 'light') {
+					setTheme('dark');
+				} else {
+					setTheme('light');
+				}
+			}
 		}
 	];
 </script>
@@ -80,7 +103,10 @@
 	<div class="overlay">
 		<div
 			class="fixed inset-0 z-10 bg-black opacity-50"
-			on:click={() => CommandPalette_Open.set(false)}
+			on:click={(e) => {
+				e.stopPropagation();
+				CommandPalette_Open.set(false);
+			}}
 			on:keydown={(e) => {
 				if (e.key === 'Escape') {
 					CommandPalette_Open.set(false);
@@ -90,6 +116,9 @@
 	</div>
 	<dialog
 		open
+		on:focusout={(e) => {
+			console.log(e);
+		}}
 		class="border-1 top-1/3 z-20 mx-auto flex max-h-60 w-5/6 flex-col rounded border border-stone-400 p-4 text-stone-600 shadow-md dark:bg-stone-900 dark:text-stone-300 lg:w-1/3"
 	>
 		<div class="searchbar border-box mb-2 flex items-center gap-4 border-stone-400">
@@ -114,6 +143,7 @@
 					modifier={note.modifier}
 					key={note.key}
 					command={note.command}
+					shift={note.shift}
 					icon="Document"
 				/>
 			{/each}
@@ -125,6 +155,7 @@
 					title={command.title}
 					modifier={command.modifier}
 					key={command.key}
+					shift={command.shift}
 					command={command.command}
 				/>
 			{/each}

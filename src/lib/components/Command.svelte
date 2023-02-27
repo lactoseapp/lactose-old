@@ -4,6 +4,7 @@
 	export let key: string | undefined = undefined;
 	export let icon: 'Terminal' | 'Document' = 'Terminal';
 	export let command: any = null;
+	export let shift: boolean = false;
 	import { Terminal, StickyNote } from 'lucide-svelte';
 </script>
 
@@ -31,6 +32,12 @@
 					>
 				{/if}
 				+
+				{#if shift}
+					<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
+						>Shift</span
+					>
+					+
+				{/if}
 				<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
 					>{key}</span
 				>
