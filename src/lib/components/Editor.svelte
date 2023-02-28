@@ -10,7 +10,6 @@
 	import { Editor_Markdown, Editor_Document, Editor_Instance, View_Document } from '$lib/stores';
 	import { updateContent, getNoteById } from '$lib/db';
 	import { replaceAll } from '@milkdown/utils';
-	export const defaultValue = 'Hello World!';
 
 	function editor(dom: any) {
 		const makeEditor = Editor.make()

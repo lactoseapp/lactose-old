@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Menu, Terminal } from 'lucide-svelte';
-	import { Header_Title, View_Document, CommandPalette_Open } from '$lib/stores';
-	import { getNoteById, updateTitle, type Note } from '$lib/db';
+	import { Header_Title, View_Document, CommandPalette, App_Notes } from '$lib/stores';
+	import { getNoteById, updateTitle, getAllNotes, type Note } from '$lib/db';
 	import { onMount } from 'svelte';
 
 	const setTitle = async (title: string) => {
@@ -41,8 +41,9 @@
 		>
 	</div>
 	<button
-		on:click={() => {
-			CommandPalette_Open.set(true);
+		on:click={async () => {
+			App_Notes.set(await getAllNotes());
+			$CommandPalette.showModal();
 		}}
 	>
 		<Terminal class="flex-shrink-0 dark:text-stone-300" />

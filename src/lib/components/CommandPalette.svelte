@@ -1,164 +1,143 @@
 <script lang="ts">
-	import Command from './Command.svelte';
-	import { getAllNotes, getNoteById, newNote, deleteNote } from '$lib/db';
-	import { Search } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import {
+		CommandPalette,
+		App_Theme,
 		View_Document,
 		Editor_Instance,
 		Header_Title,
-		CommandPalette_Open,
-		App_Theme
+		App_Notes
 	} from '$lib/stores';
+	import { Search, Terminal, Palette, FilePlus2, File, Trash } from 'lucide-svelte';
+	import { getNoteById, newNote, getAllNotes, deleteNote } from '$lib/db';
 	import { replaceAll } from '@milkdown/utils';
-	let CommandPalette: HTMLInputElement;
-	let notes: any = [];
-	const loadNote = (id: number) => {
-		View_Document.set(id);
-		localStorage.setItem('currentNote', id as any);
-		getNoteById(id).then((note: any) => {
-			($Editor_Instance as any).action(replaceAll(note.content));
-			Header_Title.set(note.title);
-			CommandPalette_Open.set(false);
-		});
-	};
-	const createNote = async () => {
-		const id = await newNote();
-		loadNote(id as any);
-	};
+	import CommandPaletteItem from './CommandPaletteItem.svelte';
+
+	let query: string = '';
+	let dialog: HTMLDialogElement;
 	const setTheme = (theme: string) => {
 		document.documentElement.classList.remove('light', 'dark');
 		document.documentElement.classList.add(theme);
 		localStorage.setItem('theme', theme);
 		App_Theme.set(theme);
 	};
-	const fetchNotes = async () => {
-		let notes = (await getAllNotes()) as any;
-		notes = notes.map((note: any) => {
-			return {
-				title: note.title,
-				command: () => loadNote(note.id)
-			};
-		});
-		return notes;
-	};
+	View_Document.subscribe(async () => App_Notes.set(await getAllNotes()));
+	Editor_Instance.subscribe(async () => App_Notes.set(await getAllNotes()));
+	Header_Title.subscribe(async () => App_Notes.set(await getAllNotes()));
 	onMount(async () => {
-		notes = await fetchNotes();
-		CommandPalette.focus();
-		window.addEventListener('keydown', (e) => {
-			if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-				e.preventDefault();
-				e.stopPropagation();
-				e.stopImmediatePropagation();
-				CommandPalette_Open.set(true);
+		CommandPalette.set(dialog as any);
+		App_Notes.set(await getAllNotes());
+		dialog.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') {
+				dialog.close();
 			}
-			if (e.key === 'Escape' || (e.key === 'Esc' && $CommandPalette_Open)) {
-				e.preventDefault();
-				CommandPalette_Open.set(false);
+		});
+		dialog.addEventListener('click', (e) => {
+			// detect clicks outside the dialog
+			const rect = dialog.getBoundingClientRect();
+			const isInDialog =
+				rect.top <= e.clientY &&
+				e.clientY <= rect.top + rect.height &&
+				rect.left <= e.clientX &&
+				e.clientX <= rect.left + rect.width;
+			if (!isInDialog) {
+				dialog.close();
 			}
 		});
 	});
-	View_Document.subscribe(async (id) => {
-		notes = await fetchNotes();
-	});
-	CommandPalette_Open.subscribe(async () => {
-		notes = await fetchNotes();
-	});
-	let query: string = '';
+	const loadNote = (id: number) => {
+		console.log(id);
+		View_Document.set(id);
+		localStorage.setItem('currentNote', id as any);
+		getNoteById(id).then((note: any) => {
+			($Editor_Instance as any).action(replaceAll(note.content));
+			Header_Title.set(note.title);
+		});
+	};
+	const createNote = async () => {
+		const id = await newNote();
+		loadNote(id as any);
+	};
 	const commands = [
 		{
-			title: 'Create new note',
-			modifier: 'Ctrl',
-			key: 'N',
-			command: () => {
+			title: 'Change Theme',
+			icon: Palette,
+			handler: () => {
+				$App_Theme === 'light' ? setTheme('dark') : setTheme('light');
+			}
+		},
+		{
+			title: 'Create New Note',
+			icon: FilePlus2,
+			handler: () => {
 				createNote();
-				CommandPalette_Open.set(false);
 			}
 		},
 		{
-			title: 'Delete current note',
-			command: () => {
-				if ($View_Document !== 1) {
+			title: 'Delete Current Note',
+			icon: Trash,
+			handler: () => {
+				if (confirm('Are you sure you want to delete this note?')) {
 					deleteNote($View_Document);
-					View_Document.set(1);
-					loadNote(1);
-					CommandPalette_Open.set(false);
+					loadNote(($App_Notes as any)[0].id);
 				}
-			}
-		},
-		{
-			title: 'Toggle theme',
-			command: () => {
-				if ($App_Theme === 'light') {
-					setTheme('dark');
-				} else {
-					setTheme('light');
+				if (($App_Notes as any).length === 1) {
+					createNote();
 				}
 			}
 		}
 	];
 </script>
 
-{#if $CommandPalette_Open}
-	<div class="overlay">
+<dialog
+	bind:this={dialog}
+	class="h-96 w-5/6 rounded bg-stone-50 shadow-md outline-stone-600 backdrop:bg-stone-900/50 dark:bg-stone-900 dark:outline dark:outline-1 lg:w-1/3"
+>
+	<form method="dialog">
 		<div
-			class="fixed inset-0 z-10 bg-black opacity-50"
-			on:click={(e) => {
-				e.stopPropagation();
-				CommandPalette_Open.set(false);
-			}}
-			on:keydown={(e) => {
-				if (e.key === 'Escape') {
-					CommandPalette_Open.set(false);
-				}
-			}}
-		/>
-	</div>
-	<dialog
-		open
-		on:focusout={(e) => {
-			console.log(e);
-		}}
-		class="border-1 top-1/3 z-20 mx-auto flex max-h-60 w-5/6 flex-col rounded border border-stone-400 p-4 text-stone-600 shadow-md dark:bg-stone-900 dark:text-stone-300 lg:w-1/3"
-	>
-		<div class="searchbar border-box mb-2 flex items-center gap-4 border-stone-400">
-			<Search class="flex-shrink-0" />
+			class="searchbar mb-4 flex items-center gap-4 rounded bg-stone-200 p-2 text-stone-500 dark:bg-stone-800"
+		>
+			<Search class="flex-shrink-0" size="20" />
 			<input
 				type="text"
 				name="search"
 				id="search"
-				class="flex w-full items-center bg-transparent focus:outline-none"
 				placeholder="search..."
+				class="bg-transparent placeholder:text-stone-400 focus:outline-none dark:placeholder:text-stone-700"
 				bind:value={query}
 			/>
 		</div>
-		<div class="spacer my-2">
-			<hr class="border-stone-400 dark:border-stone-700" />
-		</div>
-		<div class="command-list h-full max-h-40 overflow-auto">
-			<span class="my-2 block py-2 font-bold">Notes</span>
-			{#each notes.filter((note) => note.title.toLowerCase().includes(query.toLowerCase())) as note}
-				<Command
-					title={note.title}
-					modifier={note.modifier}
-					key={note.key}
-					command={note.command}
-					shift={note.shift}
-					icon="Document"
-				/>
-			{/each}
-			<span class="my-2 block py-2 font-bold">Commands</span>
+		<div class="command-wrapper flex flex-col">
 			{#each commands.filter((command) => command.title
 					.toLowerCase()
 					.includes(query.toLowerCase())) as command}
-				<Command
-					title={command.title}
-					modifier={command.modifier}
-					key={command.key}
-					shift={command.shift}
-					command={command.command}
-				/>
+				<CommandPaletteItem {...command}>
+					<svelte:fragment slot="icon">
+						{#if command.icon}
+							<svelte:component this={command.icon} size="20" />
+						{:else}
+							<Terminal size="20" />
+						{/if}
+					</svelte:fragment>
+				</CommandPaletteItem>
 			{/each}
+			<span class="p-2 text-stone-400 dark:text-stone-500">Notes</span>
+			{#if $App_Notes}
+				{#each $App_Notes.filter((note) => note.title
+						.toLowerCase()
+						.includes(query.toLowerCase())) as note}
+					<CommandPaletteItem
+						title={note.title}
+						handler={() => {
+							loadNote(note.id);
+						}}
+					>
+						<svelte:fragment slot="icon">
+							<File size="20" />
+						</svelte:fragment>
+					</CommandPaletteItem>
+				{/each}
+			{/if}
 		</div>
-	</dialog>
-{/if}
+	</form>
+</dialog>
