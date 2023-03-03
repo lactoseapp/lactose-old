@@ -1,51 +1,75 @@
 <script lang="ts">
 	import { Menu, Terminal } from 'lucide-svelte';
-	import { Header_Title, View_Document, CommandPalette, App_Notes } from '$lib/stores';
-	import { getNoteById, updateTitle, getAllNotes, type Note } from '$lib/db';
-	import { onMount } from 'svelte';
-
-	const setTitle = async (title: string) => {
-		await updateTitle($View_Document, title);
-	};
-	onMount(async () => {
-		const currentNote = await getNoteById($View_Document);
-		Header_Title.set((currentNote as Note).title);
-	});
+	export let title = 'Untitled';
 </script>
 
-<nav
-	class="fixed top-0 flex w-full items-center gap-5 bg-white p-5 text-stone-800 dark:bg-stone-900 dark:text-stone-500"
->
-	<Menu class="flex-shrink-0" />
-	<div class="note-title flex-grow text-sm text-stone-500">
-		<input
-			type="text"
-			name="note-title"
-			id="note-title"
-			class="w-full bg-transparent outline-stone-300 focus:outline-dashed dark:outline-stone-700"
-			bind:value={$Header_Title}
-			on:blur={() => setTitle($Header_Title)}
-		/>
+<nav class="header-nav">
+	<Menu />
+	<input type="text" name="note-title" id="note-title" bind:value={title} />
+	<div class="shortcut-wrapper">
+		<div>
+			<kbd>Ctrl</kbd>
+			+
+			<kbd>K</kbd>
+		</div>
+		<Terminal />
 	</div>
-	<div class="shortcut hidden text-xs lg:block">
-		<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
-			>Ctrl</span
-		>
-		/
-		<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
-			>Cmd</span
-		>
-		+
-		<span class="shortcut-key rounded bg-stone-200 p-1 text-xs font-medium dark:bg-stone-800"
-			>K</span
-		>
-	</div>
-	<button
-		on:click={async () => {
-			App_Notes.set(await getAllNotes());
-			$CommandPalette.showModal();
-		}}
-	>
-		<Terminal class="flex-shrink-0 dark:text-stone-300" />
-	</button>
 </nav>
+
+<style lang="scss">
+	.header-nav {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem;
+		position: fixed;
+		top: 0;
+		background-color: var(--color-bg);
+		box-sizing: border-box;
+		input {
+			appearance: none;
+			border: none;
+			background-color: transparent;
+			flex: 1;
+			margin: 0 1rem;
+			padding: 0.5rem;
+			color: var(--color-paragraph);
+			text-align: center;
+
+			&:focus {
+				outline: 1px dashed var(--color-paragraph);
+			}
+			&::placeholder {
+				color: var(--color-paragraph);
+			}
+			&:autofill {
+				background-color: transparent;
+				border: none;
+			}
+		}
+		.shortcut-wrapper {
+			display: flex;
+			align-items: center;
+			div {
+				display: none;
+				align-items: center;
+				gap: 0.25rem;
+				color: var(--color-paragraph);
+
+				@media (min-width: 768px) {
+					display: flex;
+				}
+			}
+			gap: 1rem;
+			kbd {
+				background-color: var(--color-primary);
+				padding: 0.25rem 0.5rem;
+				border-radius: 0.25rem;
+				font-size: 0.8rem;
+				color: var(--color-button-text);
+				font-family: 'Roboto', sans-serif;
+			}
+		}
+	}
+</style>
