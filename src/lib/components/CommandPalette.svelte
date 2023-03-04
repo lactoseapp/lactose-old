@@ -81,7 +81,7 @@
 				e.clientX < rect.left + rect.width;
 			// check if event target is inside dialog
 
-			if (!isInDialog && e.target.className !== 'command') {
+			if (!isInDialog && !e.currentTarget.classList.contains('command')) {
 				palette.close();
 				CommandPaletteOpen.set(false);
 				mode = 'command';
