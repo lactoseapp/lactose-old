@@ -81,7 +81,7 @@
 				e.clientX < rect.left + rect.width;
 			// check if event target is inside dialog
 
-			if (!isInDialog && (e.target as HTMLButtonElement).className !== 'command') {
+			if (!isInDialog && e.target.className !== 'command') {
 				palette.close();
 				CommandPaletteOpen.set(false);
 				mode = 'command';
