@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let title: string;
-	export let keybinding: string = '';
-	export let handler: () => any;
+	export let keybinding = '';
+	export let handler: () => void;
 </script>
 
 <button class="command" on:click={handler}>

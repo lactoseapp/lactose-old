@@ -19,12 +19,12 @@
 						return refractor;
 					}
 				});
-				listener.updated((ctx, doc, prevDoc) => {
+				listener.updated((_, doc, prevDoc) => {
 					if (doc !== prevDoc) {
 						EditorJSON.set(doc);
 					}
 				});
-				listener.markdownUpdated((ctx, markdown, prevMarkdown) => {
+				listener.markdownUpdated((_, markdown, prevMarkdown) => {
 					if (markdown !== prevMarkdown) {
 						EditorMarkdown.set(markdown);
 					}
