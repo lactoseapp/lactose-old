@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Menu, Terminal } from 'lucide-svelte';
+	import { CommandPaletteOpen } from '$lib/stores';
 	export let title = 'Untitled';
 </script>
 
@@ -12,7 +13,13 @@
 			+
 			<kbd>K</kbd>
 		</div>
-		<Terminal />
+		<button
+			on:click={() => {
+				CommandPaletteOpen.set(true);
+			}}
+		>
+			<Terminal />
+		</button>
 	</div>
 </nav>
 
@@ -69,6 +76,16 @@
 				font-size: 0.8rem;
 				color: var(--color-button-text);
 				font-family: 'Roboto', sans-serif;
+			}
+			button {
+				appearance: none;
+				border: none;
+				background-color: transparent;
+				cursor: pointer;
+				color: var(--color-paragraph);
+				&:focus {
+					outline: none;
+				}
 			}
 		}
 	}

@@ -37,3 +37,4 @@ export const EditorInstance = writable({});
 export const EditorMarkdown = writable("");
 export const EditorJSON = writable({});
 export const Theme = createTheme();
+export const CommandPaletteOpen = writable(false);

@@ -37,7 +37,6 @@ svg {
 	--color-button-text: #fffffe;
 	--code: #0b0b0e; // 10% lighter than --color-bg
 }
-
 .latte {
 	--color-bg: #55423d;
 	--color-heading: #fffffe;
@@ -57,4 +56,16 @@ svg {
 	--color-tertiary: #a786df;
 	--color-button-text: #fffffe;
 	--code: #f8bacb;
+}
+.light ::backdrop {
+	--color-primary: #ffd803;
+}
+.dark ::backdrop {
+	--color-primary: #7f5af0;
+}
+.latte ::backdrop {
+	--color-primary: #ffc0ad;
+}
+.pink ::backdrop {
+	--color-primary: #e0839f;
 }
