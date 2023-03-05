@@ -8,7 +8,6 @@
 		&:focus {
 			outline: none;
 		}
-		outline: 1px dashed var(--color-paragraph);
 		h1,
 		h2,
 		h3,
@@ -16,6 +15,9 @@
 		h5,
 		h6 {
 			color: var(--color-heading);
+		}
+		.milkdown-placeholder {
+			opacity: 0.5;
 		}
 		.emoji {
 			width: 1.25em;

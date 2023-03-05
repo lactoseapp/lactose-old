@@ -6,6 +6,7 @@
 	import { emoji } from '@milkdown/plugin-emoji';
 	import { clipboard } from '@milkdown/plugin-clipboard';
 	import { listener, listenerCtx } from '@milkdown/plugin-listener';
+	import { placeholder } from '$lib/plugins/placeholder';
 	import { EditorInstance, EditorJSON, EditorMarkdown } from '../stores';
 	import { prism, prismConfig } from '@milkdown/plugin-prism';
 	import { refractor } from 'refractor/lib/common';
@@ -37,6 +38,7 @@
 			.use(emoji)
 			.use(clipboard)
 			.use(prism)
+			.use(placeholder)
 			.use(listener)
 			.create();
 		makeEditor.then((editor) => {
