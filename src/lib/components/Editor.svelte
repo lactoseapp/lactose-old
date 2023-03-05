@@ -1,7 +1,5 @@
 <script lang="ts">
-	import Footer from './Footer.svelte';
-
-	import { Editor, rootCtx, defaultValueCtx } from '@milkdown/core';
+	import { Editor, rootCtx } from '@milkdown/core';
 	import { commonmark } from '@milkdown/preset-commonmark';
 	import { gfm } from '@milkdown/preset-gfm';
 	import { history } from '@milkdown/plugin-history';
@@ -12,7 +10,7 @@
 	import { prism, prismConfig } from '@milkdown/plugin-prism';
 	import { refractor } from 'refractor/lib/common';
 
-	function editor(dom: any) {
+	function editor(dom: HTMLDivElement) {
 		const makeEditor = Editor.make()
 			.config((ctx) => {
 				const listener = ctx.get(listenerCtx);
@@ -21,12 +19,12 @@
 						return refractor;
 					}
 				});
-				listener.updated((ctx, doc, prevDoc) => {
+				listener.updated((_, doc, prevDoc) => {
 					if (doc !== prevDoc) {
 						EditorJSON.set(doc);
 					}
 				});
-				listener.markdownUpdated((ctx, markdown, prevMarkdown) => {
+				listener.markdownUpdated((_, markdown, prevMarkdown) => {
 					if (markdown !== prevMarkdown) {
 						EditorMarkdown.set(markdown);
 					}

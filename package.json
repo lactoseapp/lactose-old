@@ -37,9 +37,12 @@
 		"@milkdown/plugin-history": "^7.0.1",
 		"@milkdown/plugin-listener": "^7.0.1",
 		"@milkdown/plugin-prism": "^7.0.1",
+		"@milkdown/preset-commonmark": "^7.0.1",
 		"@milkdown/preset-gfm": "^7.0.1",
 		"@milkdown/prose": "^7.0.1",
 		"@milkdown/transformer": "^7.0.1",
-		"lucide-svelte": "^0.119.0"
+		"lucide-svelte": "^0.119.0",
+		"refractor": "^4.8.1",
+		"svelte-use-click-outside": "^1.0.0"
 	}
 }

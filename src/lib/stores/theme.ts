@@ -1,7 +1,7 @@
-import { writable } from "svelte/store";
 import { browser } from "$app/environment";
+import { writable } from "svelte/store";
 
-const createTheme = () => {
+export const createTheme = () => {
     let defaultTheme = "light";
     if (browser) {
         const storedTheme = localStorage.getItem("theme");
@@ -33,8 +33,3 @@ const createTheme = () => {
         },
     };
 };
-export const EditorInstance = writable({});
-export const EditorMarkdown = writable("");
-export const EditorJSON = writable({});
-export const Theme = createTheme();
-export const CommandPaletteOpen = writable(false);
