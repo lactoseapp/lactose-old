@@ -13,13 +13,8 @@ export const themes = [
 		icon: Moon
 	},
 	{
-		title: 'latte',
-		handler: () => Theme.set('latte'),
-		icon: Palette
-	},
-	{
-		title: 'pink',
-		handler: () => Theme.set('pink'),
+		title: 'purple void',
+		handler: () => Theme.set('purple-void'),
 		icon: Palette
 	}
 ];

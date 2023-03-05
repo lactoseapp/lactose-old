@@ -8,64 +8,43 @@ html {
 	margin: 0;
 	padding: 0;
 	font-family: 'Roboto', sans-serif;
-	font-size: 16px;
-	color: var(--color-paragraph);
+	font-size: calc(15px + 0.390625vw);
+	color: var(--color-base);
 	background-color: #fff;
 	box-sizing: border-box;
 	background-color: var(--color-bg);
+}
+input {
+	font-family: 'Roboto', sans-serif;
+	font-size: 1em;
 }
 svg {
 	flex-shrink: 0;
 }
 .light {
-	--color-bg: #fffffe;
-	--color-heading: #272343;
-	--color-paragraph: #272343;
-	--color-primary: #ffd803;
-	--color-secondary: #e3f6f5;
-	--color-tertiary: #bae8e8;
-	--color-button-text: #272343;
-	--code: #eee;
+	--color-base: hsl(19, 9%, 52%);
+	--color-base-contrast: hsl(21, 8%, 33%);
+	--color-bg: hsl(270, 3%, 85%);
+	--color-bg-contrast: hsl(9, 5%, 70%);
+	--color-button: hsl(19, 9%, 52%);
+	--color-button-contrast: hsl(21, 8%, 33%);
+	--color-button-base: hsl(270, 3%, 85%);
 }
 .dark {
-	--color-bg: #16161a;
-	--color-heading: #fffffe;
-	--color-paragraph: #94a1b2;
-	--color-primary: #7f5af0;
-	--color-secondary: #72757e;
-	--color-tertiary: #2cb67d;
-	--color-button-text: #fffffe;
-	--code: #0b0b0e; // 10% lighter than --color-bg
+	--color-base: hsl(210, 5%, 36%);
+	--color-base-contrast: hsl(270, 3%, 85%);
+	--color-bg: hsl(0, 2%, 10%);
+	--color-bg-contrast: hsl(300, 1%, 18%);
+	--color-button: hsl(300, 1%, 18%);
+	--color-button-contrast: hsl(210, 5%, 36%);
+	--color-button-base: hsl(270, 3%, 85%);
 }
-.latte {
-	--color-bg: #55423d;
-	--color-heading: #fffffe;
-	--color-paragraph: #fff3ec;
-	--color-primary: #ffc0ad;
-	--color-secondary: #ffc0ad;
-	--color-tertiary: #9656a1;
-	--color-button-text: #271c19;
-	--code: #4a3a36;
-}
-.pink {
-	--color-bg: #fec7d7;
-	--color-heading: #7a3e4f;
-	--color-paragraph: #b35b74;
-	--color-primary: #e0839f;
-	--color-secondary: #d9d4e7;
-	--color-tertiary: #a786df;
-	--color-button-text: #fffffe;
-	--code: #f8bacb;
-}
-.light ::backdrop {
-	--color-primary: #ffd803;
-}
-.dark ::backdrop {
-	--color-primary: #7f5af0;
-}
-.latte ::backdrop {
-	--color-primary: #ffc0ad;
-}
-.pink ::backdrop {
-	--color-primary: #e0839f;
+.purple-void {
+	--color-base: hsl(331, 75%, 68%);
+	--color-base-contrast: hsl(334, 81%, 74%);
+	--color-bg: hsl(318, 34%, 13%);
+	--color-bg-contrast: hsl(315, 49%, 18%);
+	--color-button: hsl(322, 44%, 32%);
+	--color-button-contrast: hsl(331, 75%, 68%);
+	--color-button-base: hsl(0, 0%, 100%);
 }

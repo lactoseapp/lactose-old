@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let title: string;
-	export let keybinding = '';
 	export let handler: () => void;
 </script>
 
@@ -12,11 +11,6 @@
 		<div class="command__title">
 			{title}
 		</div>
-		{#if keybinding}
-			<div class="command__keybinding">
-				{keybinding}
-			</div>
-		{/if}
 	</div>
 </button>
 
@@ -35,8 +29,8 @@
 		&:active,
 		&:hover {
 			outline: none;
-			background: var(--color-primary);
-			color: var(--color-button-text);
+			background: var(--color-button);
+			color: var(--color-button-base);
 		}
 		.command__description {
 			display: flex;
@@ -51,9 +45,6 @@
 				flex: 1;
 				text-align: left;
 				font-size: 1rem;
-			}
-			.command__keybinding {
-				font-size: 0.7rem;
 			}
 		}
 	}

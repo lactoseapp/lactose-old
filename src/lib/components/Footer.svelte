@@ -5,31 +5,24 @@
 <nav class="footer-nav">
 	<button
 		class="color-swatch"
-		style="background-color: #fffffe;"
+		style="background-color: #d8d7d9;"
 		data-theme="light"
 		data-active={$Theme === 'light'}
 		on:click={() => Theme.set('light')}
 	/>
 	<button
 		class="color-swatch"
-		style="background-color: #222;"
+		style="background-color: #191818;"
 		data-theme="dark"
 		data-active={$Theme === 'dark'}
 		on:click={() => Theme.set('dark')}
 	/>
 	<button
 		class="color-swatch"
-		style="background-color: #55423d;"
-		data-theme="beige"
-		data-active={$Theme === 'latte'}
-		on:click={() => Theme.set('latte')}
-	/>
-	<button
-		class="color-swatch"
-		style="background-color: #fec7d7;"
-		data-theme="black"
-		data-active={$Theme === 'pink'}
-		on:click={() => Theme.set('pink')}
+		style="background-color: #2d1626;"
+		data-theme="purple-void"
+		data-active={$Theme === 'purple-void'}
+		on:click={() => Theme.set('purple-void')}
 	/>
 </nav>
 
@@ -55,12 +48,8 @@
 			margin: 0 0.25rem;
 			cursor: pointer;
 			transition: background-color 0.2s ease-in-out;
-
-			&:hover {
-				background-color: var(--color-tertiary);
-			}
 			&[data-active='true'] {
-				border: 2px solid var(--color-primary);
+				border: 2px solid var(--color-bg-contrast);
 			}
 		}
 	}

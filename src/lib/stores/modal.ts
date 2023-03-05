@@ -2,16 +2,16 @@ import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
 export const createModal = () => {
-  let onWindowKeyDown: (arg0: KeyboardEvent) => void;
+	let onWindowKeyDown: (arg0: KeyboardEvent) => void;
 	const { subscribe, set } = writable(false, (set) => {
 		if (!onWindowKeyDown) {
 			onWindowKeyDown = (e: KeyboardEvent) => {
-				if (e.ctrlKey && e.key === 'k') {
-          e.preventDefault()
+				if (e.ctrlKey && e.keyCode === 75) {
+					e.preventDefault();
 					set(true);
 				}
 				if (e.key === 'Escape') {
-          set(false);
+					set(false);
 				}
 			};
 		}
@@ -25,6 +25,6 @@ export const createModal = () => {
 
 	return {
 		subscribe,
-    set,
+		set
 	};
 };

@@ -5,6 +5,8 @@
 		padding: 0 1em;
 	}
 	.editor {
+		padding-bottom: 10em;
+		white-space: pre-wrap;
 		&:focus {
 			outline: none;
 		}
@@ -14,25 +16,35 @@
 		h4,
 		h5,
 		h6 {
-			color: var(--color-heading);
+			color: var(--color-base-contrast);
 		}
 		.milkdown-placeholder {
 			opacity: 0.5;
+			z-index: 0;
+			pointer-events: none;
+		}
+		img {
+			max-width: 100%;
+			margin: 0 auto;
+			display: block;
 		}
 		.emoji {
 			width: 1.25em;
 			height: 1.25em;
+		}
+		p {
+			line-height: 1.5;
 		}
 		li {
 			p {
 				margin: 0;
 			}
 			&::marker {
-				color: var(--color-paragraph);
+				color: var(--color-base);
 			}
 		}
 		a {
-			color: var(--color-primary);
+			color: var(--color-base);
 			text-decoration: none;
 			&:hover {
 				text-decoration: underline;
@@ -42,22 +54,28 @@
 			padding: 0.2em 0.4em;
 			border-radius: 0.2em;
 			font-size: 0.9em;
-			background: var(--code);
+			background: var(--color-bg-contrast);
 		}
 		pre {
 			padding: 0.2em 0.4em;
 			border-radius: 0.2em;
-			background: var(--code);
+			border: 1px solid var(--color-bg-contrast);
 			min-height: 3em;
 			overflow: auto;
+
+			code {
+				padding: 0;
+				border-radius: 0;
+				background: transparent;
+			}
 		}
 		hr {
 			border: 0;
-			border-top: 1px solid var(--color-paragraph);
+			border-top: 1px solid var(--color-base);
 		}
 		em {
 			font-style: italic;
-			color: var(--color-paragraph);
+			color: var(--color-base);
 		}
 	}
 }

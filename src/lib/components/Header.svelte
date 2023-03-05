@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { Menu, Terminal } from 'lucide-svelte';
+	import { Terminal } from 'lucide-svelte';
 	import { CommandPaletteOpen } from '$lib/stores';
-	export let title = 'Untitled';
+	export let title = '';
 </script>
 
 <nav class="header-nav">
-	<Menu />
-	<input type="text" name="note-title" id="note-title" bind:value={title} />
+	<input type="text" name="note-title" id="note-title" bind:value={title} placeholder="Untitled" />
 	<div class="shortcut-wrapper">
 		<div>
 			<kbd>Ctrl</kbd>
@@ -26,6 +25,7 @@
 <style lang="scss">
 	.header-nav {
 		display: flex;
+		z-index: 1;
 		width: 100%;
 		justify-content: space-between;
 		align-items: center;
@@ -41,14 +41,19 @@
 			flex: 1;
 			margin: 0 1rem;
 			padding: 0.5rem;
-			color: var(--color-paragraph);
+			color: var(--color-base);
 			text-align: center;
 
+			&::placeholder {
+				color: var(--color-base);
+				opacity: 0.5;
+			}
+
 			&:focus {
-				outline: 1px dashed var(--color-paragraph);
+				outline: none;
 			}
 			&::placeholder {
-				color: var(--color-paragraph);
+				color: var(--color-base);
 			}
 			&:autofill {
 				background-color: transparent;
@@ -62,7 +67,7 @@
 				display: none;
 				align-items: center;
 				gap: 0.25rem;
-				color: var(--color-paragraph);
+				color: var(--color-base);
 
 				@media (min-width: 768px) {
 					display: flex;
@@ -70,11 +75,11 @@
 			}
 			gap: 1rem;
 			kbd {
-				background-color: var(--color-primary);
+				background-color: var(--color-button-contrast);
 				padding: 0.25rem 0.5rem;
 				border-radius: 0.25rem;
 				font-size: 0.8rem;
-				color: var(--color-button-text);
+				color: var(--color-button-base);
 				font-family: 'Roboto', sans-serif;
 			}
 			button {
@@ -82,7 +87,7 @@
 				border: none;
 				background-color: transparent;
 				cursor: pointer;
-				color: var(--color-paragraph);
+				color: var(--color-base-contrast);
 				&:focus {
 					outline: none;
 				}

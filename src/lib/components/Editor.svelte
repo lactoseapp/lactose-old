@@ -6,6 +6,7 @@
 	import { emoji } from '@milkdown/plugin-emoji';
 	import { clipboard } from '@milkdown/plugin-clipboard';
 	import { listener, listenerCtx } from '@milkdown/plugin-listener';
+	import { block } from '@milkdown/plugin-block';
 	import { placeholder } from '$lib/plugins/placeholder';
 	import { EditorInstance, EditorJSON, EditorMarkdown } from '../stores';
 	import { prism, prismConfig } from '@milkdown/plugin-prism';
@@ -38,6 +39,7 @@
 			.use(emoji)
 			.use(clipboard)
 			.use(prism)
+			.use(block)
 			.use(placeholder)
 			.use(listener)
 			.create();
