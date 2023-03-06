@@ -16,5 +16,10 @@ export const themes = [
 		title: 'purple void',
 		handler: () => Theme.set('purple-void'),
 		icon: Palette
+	},
+	{
+		title: 'creamy coffee',
+		handler: () => Theme.set('creamy-coffee'),
+		icon: Palette
 	}
 ];

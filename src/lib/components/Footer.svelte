@@ -12,6 +12,13 @@
 	/>
 	<button
 		class="color-swatch"
+		style="background-color: #ddd2bc;"
+		data-theme="creamy-coffee"
+		data-active={$Theme === 'creamy-coffee'}
+		on:click={() => Theme.set('creamy-coffee')}
+	/>
+	<button
+		class="color-swatch"
 		style="background-color: #191818;"
 		data-theme="dark"
 		data-active={$Theme === 'dark'}
