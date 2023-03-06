@@ -1,9 +1,10 @@
-import { writable } from "svelte/store";
-import { createTheme } from "$lib/stores/theme"
-import { createModal } from "./modal";
-
+import { writable } from 'svelte/store';
+import { createTheme } from '$lib/stores/theme';
+import { createModal } from './modal';
+import { createUserSettings } from './user-settings';
 export const EditorInstance = writable({});
-export const EditorMarkdown = writable("");
+export const EditorMarkdown = writable('');
 export const EditorJSON = writable({});
 export const Theme = createTheme();
-export const CommandPaletteOpen = createModal()
+export const CommandPaletteOpen = createModal();
+export const UserSettings = createUserSettings();

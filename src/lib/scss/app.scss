@@ -22,7 +22,7 @@ svg {
 	flex-shrink: 0;
 }
 .light {
-	--color-base: hsl(19, 9%, 52%);
+	--color-base: hsl(17, 9%, 44%);
 	--color-base-contrast: hsl(21, 8%, 33%);
 	--color-bg: hsl(270, 3%, 85%);
 	--color-bg-contrast: hsl(9, 5%, 70%);
@@ -31,12 +31,12 @@ svg {
 	--color-button-base: hsl(270, 3%, 85%);
 }
 .dark {
-	--color-base: hsl(210, 5%, 36%);
+	--color-base: hsl(207, 7%, 50%);
 	--color-base-contrast: hsl(270, 3%, 85%);
 	--color-bg: hsl(0, 2%, 10%);
 	--color-bg-contrast: hsl(300, 1%, 18%);
 	--color-button: hsl(300, 1%, 18%);
-	--color-button-contrast: hsl(210, 5%, 36%);
+	--color-button-contrast: hsl(210, 5%, 42%);
 	--color-button-base: hsl(270, 3%, 85%);
 }
 .purple-void {

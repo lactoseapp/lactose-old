@@ -1,18 +1,45 @@
 <script lang="ts">
-	import { Palette, Search } from 'lucide-svelte';
+	import { Palette, Search, Terminal } from 'lucide-svelte';
 	import { CommandPaletteOpen } from '$lib/stores';
 	import Command from './Command.svelte';
 	import { themes } from '$lib/constants/themes';
 	import { clickOutside } from 'svelte-use-click-outside';
-
+	import { EditorInstance, EditorMarkdown } from '$lib/stores';
+	import { typewriter } from '$lib/plugins/typewriter';
+	import { replaceAll } from '@milkdown/utils';
+	import type { Editor } from '@milkdown/core';
+	import { UserSettings } from '$lib/stores';
+	import { onMount } from 'svelte';
 	let searchbar: HTMLInputElement;
 	let query = '';
 	let mode = 'command';
+
+	const setEditorMode = () => {
+		const content = $EditorMarkdown;
+		if ($UserSettings.typingMode !== 'Typewriter') {
+			($EditorInstance as Editor).use(typewriter);
+			UserSettings.set({ ...$UserSettings, typingMode: 'Typewriter' });
+		} else {
+			($EditorInstance as Editor).remove(typewriter);
+			UserSettings.set({ ...$UserSettings, typingMode: 'Normal' });
+		}
+		($EditorInstance as Editor).create().then((editor) => {
+			editor.action(replaceAll(content));
+		});
+	};
+
 	let commands = [
 		{
 			title: 'Themes',
 			handler: () => (mode = 'theme'),
 			icon: Palette
+		},
+		{
+			title: `Toggle Typewriter Mode`,
+			handler: () => {
+				setEditorMode();
+			},
+			icon: Terminal
 		}
 	];
 

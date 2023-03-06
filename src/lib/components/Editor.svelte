@@ -8,9 +8,11 @@
 	import { listener, listenerCtx } from '@milkdown/plugin-listener';
 	import { block } from '@milkdown/plugin-block';
 	import { placeholder } from '$lib/plugins/placeholder';
+	import { typewriter } from '$lib/plugins/typewriter';
 	import { EditorInstance, EditorJSON, EditorMarkdown } from '../stores';
 	import { prism, prismConfig } from '@milkdown/plugin-prism';
 	import { refractor } from 'refractor/lib/common';
+	import { UserSettings } from '$lib/stores';
 
 	function editor(dom: HTMLDivElement) {
 		const makeEditor = Editor.make()
@@ -46,8 +48,16 @@
 		makeEditor.then((editor) => {
 			dom.spellcheck = false;
 			EditorInstance.set(editor);
+
+			if ($UserSettings.typingMode === 'Typewriter') {
+				editor.use(typewriter);
+				editor.create();
+			}
 		});
 	}
 </script>
 
 <div class="editor" use:editor />
+
+<style lang="scss">
+</style>

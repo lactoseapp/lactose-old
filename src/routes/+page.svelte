@@ -11,3 +11,10 @@
 	<Footer />
 	<CommandPalette />
 </main>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+	}
+</style>

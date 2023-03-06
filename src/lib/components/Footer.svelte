@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Theme } from '$lib/stores';
+	import { UserSettings } from '$lib/stores';
 </script>
 
 <nav class="footer-nav">
@@ -31,6 +32,9 @@
 		data-active={$Theme === 'purple-void'}
 		on:click={() => Theme.set('purple-void')}
 	/>
+	<div class="mode">
+		{$UserSettings.typingMode} Mode
+	</div>
 </nav>
 
 <style lang="scss">
@@ -44,7 +48,11 @@
 		position: fixed;
 		bottom: 0;
 		background-color: var(--color-bg);
-
+		.mode {
+			flex: 1;
+			font-size: 0.75rem;
+			color: var(--color-base);
+		}
 		.color-swatch {
 			appearance: none;
 			border: none;

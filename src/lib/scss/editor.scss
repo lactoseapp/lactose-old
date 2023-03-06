@@ -5,8 +5,8 @@
 		padding: 0 1em;
 	}
 	.editor {
-		padding-bottom: 10em;
 		white-space: pre-wrap;
+		position: relative;
 		&:focus {
 			outline: none;
 		}
@@ -40,9 +40,8 @@
 		}
 		a {
 			color: var(--color-base);
-			text-decoration: none;
 			&:hover {
-				text-decoration: underline;
+				color: var(--color-base-contrast);
 			}
 		}
 		code {

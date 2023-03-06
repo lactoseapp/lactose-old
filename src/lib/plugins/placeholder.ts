@@ -7,23 +7,28 @@ import { Decoration, DecorationSet } from '@milkdown/prose/view';
 import { $prose } from '@milkdown/utils';
 
 const PlaceholderPlugin = new Plugin({
-    key: new PluginKey('milkdown-placeholder'),
-    props: {
-        decorations: (state: EditorState) => {
-            const element = document.createElement('span')
-            
-            element.classList.add('milkdown-placeholder')
-            element.style.position = "absolute";
-            element.innerText = "Write something...";
+	key: new PluginKey('milkdown-placeholder'),
+	props: {
+		decorations: (state: EditorState) => {
+			const element = document.createElement('span');
 
-            const placeholderDecoration = Decoration.widget(0, element, {key: 'milkdown-placeholder', side: 0});
-            if (state.doc.textContent.trim().length === 0) {
-                return DecorationSet.create(state.doc, [placeholderDecoration])
-            } else {
-                return DecorationSet.empty
-            }
-        }
-    }
+			element.classList.add('milkdown-placeholder');
+			element.style.position = 'absolute';
+			element.innerText = 'Write something...';
+
+			const placeholderDecoration = Decoration.widget(0, element, {
+				key: 'milkdown-placeholder',
+				side: 0
+			});
+			if (
+				state.doc.textContent.trim().length === 0 &&
+				state.doc.firstChild?.type.name === 'paragraph'
+			) {
+				return DecorationSet.create(state.doc, [placeholderDecoration]);
+			} else {
+				return DecorationSet.empty;
+			}
+		}
+	}
 });
 export const placeholder = $prose(() => PlaceholderPlugin);
-
