@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Palette, Search, Terminal } from 'lucide-svelte';
+	import { Download, Palette, Search, Terminal, Upload } from 'lucide-svelte';
 	import { CommandPaletteOpen } from '$lib/stores';
 	import Command from './Command.svelte';
 	import { themes } from '$lib/constants/themes';
@@ -9,7 +9,7 @@
 	import { replaceAll } from '@milkdown/utils';
 	import type { Editor } from '@milkdown/core';
 	import { UserSettings } from '$lib/stores';
-	import { onMount } from 'svelte';
+	import { downloadAsFile, loadFile } from '$lib/constants/commands';
 	let searchbar: HTMLInputElement;
 	let query = '';
 	let mode = 'command';
@@ -40,6 +40,21 @@
 				setEditorMode();
 			},
 			icon: Terminal
+		},
+		{
+			title: 'Download Markdown',
+			handler: () => downloadAsFile('document.md', $EditorMarkdown),
+			icon: Download
+		},
+		{
+			title: 'Upload Markdown',
+			handler: () => {
+				loadFile((markdown: string) => {
+					($EditorInstance as Editor).action(replaceAll(markdown));
+					$CommandPaletteOpen = false;
+				});
+			},
+			icon: Upload
 		}
 	];
 
@@ -111,6 +126,7 @@
 		height: 100%;
 		z-index: 3;
 		background: #0000001e;
+		animation: growIn 0.25s ease-in-out;
 	}
 
 	.dialog {
@@ -158,6 +174,14 @@
 			border-style: solid;
 			opacity: 0.2;
 			border-color: var(--color-paragraph);
+		}
+	}
+	@keyframes growIn {
+		0% {
+			transform: scale(0);
+		}
+		100% {
+			transform: scale(1);
 		}
 	}
 </style>
