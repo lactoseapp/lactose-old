@@ -4,7 +4,7 @@
 	import Command from './Command.svelte';
 	import { themes } from '$lib/constants/themes';
 	import { clickOutside } from 'svelte-use-click-outside';
-	import { EditorInstance, EditorMarkdown } from '$lib/stores';
+	import { EditorInstance, EditorMarkdown, NoteTitle } from '$lib/stores';
 	import { typewriter } from '$lib/plugins/typewriter';
 	import { replaceAll } from '@milkdown/utils';
 	import type { Editor } from '@milkdown/core';
@@ -43,7 +43,7 @@
 		},
 		{
 			title: 'Download Markdown',
-			handler: () => downloadAsFile('document.md', $EditorMarkdown),
+			handler: () => downloadAsFile(`${$NoteTitle}.md`, $EditorMarkdown),
 			icon: Download
 		},
 		{

@@ -6,5 +6,6 @@ export const EditorInstance = writable({});
 export const EditorMarkdown = writable('');
 export const EditorJSON = writable({});
 export const Theme = createTheme();
+export const NoteTitle = writable('');
 export const CommandPaletteOpen = createModal();
 export const UserSettings = createUserSettings();

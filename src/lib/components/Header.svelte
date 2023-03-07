@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Terminal } from 'lucide-svelte';
-	import { CommandPaletteOpen } from '$lib/stores';
-	export let title = '';
+	import { CommandPaletteOpen, NoteTitle } from '$lib/stores';
+	let title = $NoteTitle;
+	$: $NoteTitle = title;
 </script>
 
 <nav class="header-nav">
