@@ -126,7 +126,7 @@
 		height: 100%;
 		z-index: 3;
 		background: #0000001e;
-		animation: growIn 0.25s ease-in-out;
+    animation: fadeIn 0.25s ease-in-out; 
 	}
 
 	.dialog {
@@ -142,6 +142,8 @@
 		z-index: 2;
 		overflow: hidden;
 		box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    animation: growIn 0.25s ease-in-out;
+
 		.search-wrapper {
 			display: flex;
 			align-items: center;
@@ -184,4 +186,13 @@
 			transform: scale(1);
 		}
 	}
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 </style>
