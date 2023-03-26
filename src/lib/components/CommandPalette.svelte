@@ -61,7 +61,13 @@
 	const onDialogClickOutside = () => ($CommandPaletteOpen = false);
 	$: if (!$CommandPaletteOpen) mode = 'command';
 
+  const resetQueryMixin = (callback: () => void) => () => {
+    callback()
+    query = ''
+  }
+
 	const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') query = ''
 		if (e.key === 'Tab') {
 			const paletteContent = document.querySelector('.palette-content');
 			const lastElement = paletteContent?.lastElementChild;
@@ -79,7 +85,7 @@
 
 {#if $CommandPaletteOpen}
 	<section class="modal">
-		<div use:clickOutside={onDialogClickOutside} class="dialog">
+		<div use:clickOutside={resetQueryMixin(onDialogClickOutside)} class="dialog">
 			<div class="search-wrapper">
 				<Search size="20" />
 				<!-- svelte-ignore a11y-autofocus -->
@@ -97,7 +103,7 @@
 					{#each commands.filter((command) => {
 						return command.title.toLowerCase().includes(query.toLowerCase());
 					}) as command}
-						<Command title={command.title} handler={command.handler}>
+						<Command title={command.title} handler={resetQueryMixin(command.handler)}>
 							<svelte:component this={command.icon} />
 						</Command>
 					{/each}
