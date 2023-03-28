@@ -31,6 +31,7 @@
 	"dependencies": {
 		"@codemirror/lang-markdown": "^6.1.0",
 		"@milkdown/core": "^7.1.1",
+		"@milkdown/plugin-listener": "^7.1.1",
 		"@milkdown/preset-commonmark": "^7.1.1",
 		"@milkdown/preset-gfm": "^7.1.1",
 		"svelte-codemirror-editor": "^1.1.0"
